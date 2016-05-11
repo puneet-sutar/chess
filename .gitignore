@@ -15,3 +15,9 @@
 /log/*.log
 /tmp
 /.idea
+# React on Railsap
+npm-debug.log
+node_modules
+
+# Generated js bundles
+/app/assets/webpack/*

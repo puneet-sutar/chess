@@ -1,0 +1,49 @@
+$parentWidth: 800px;
+.circle{
+  width: 50%;
+  height: 50%;
+  background: grey;
+  color: white;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chess-board{
+  width: 85vmin;
+  height: 85vmin;
+  border: solid 5vmin grey;
+}
+.container-fluid{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.square{
+  width: 12.5%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.selected{
+    background: cyan;
+  }
+  &.white{
+    background: white;
+  }
+  &.black{
+    background: black;
+  }
+}
+//@media (max-width: 800px){
+//	.chess-board{
+//		width: 600px;
+//		height: 600px;
+//	}
+//
+//}
