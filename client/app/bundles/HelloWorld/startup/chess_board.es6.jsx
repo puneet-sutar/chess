@@ -23,22 +23,43 @@ const WhiteSquare = ({children, selected, onClick, piece}) => {
   return(<div className={className} onClick={onClick} style={{float: 'left'}}>{children}</div>)
 }
 
-const Piece = () => {
+const Piece = ({color, name}) => {
   return(
-    <div className="circle">P</div>
+    <div className="circle">{name[0]}</div>
   )
 }
 export default class HelloWorldApp extends React.Component {
 
+
   pieceInfo(x, y){
     var state = window.store.getState();
-    return(state && state.x === x && state.y === y)
+    var return_value = <div />
+    state.pieces.forEach((i) => {
+      if(i.x === x && i.y === y)
+        return_value = <Piece {...i}/>
+    });
+    return return_value
   }
 
   componentWillMount(){
     window.store.subscribe(() => {
       this.forceUpdate();
     })
+  }
+
+  handleOnClick(x, y){
+    console.log(x, y)
+    var state = window.store.getState();
+    if(state.selectedPiece.x){
+      window.store.dispatch({ type: 'MOVE_PIECE', x1: state.selectedPiece.x, y1: state.selectedPiece.y, x2: x, y2: y  })
+    }else{
+      var selectedPiece = {}
+      state.pieces.forEach((i) => {
+        if(i.x === x && i.y === y)
+          selectedPiece = { x: x, y: y }
+      });
+      window.store.dispatch({ type: 'SELECT_PIECE', ...selectedPiece })
+    }
   }
   render () {
     var y = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -50,13 +71,10 @@ export default class HelloWorldApp extends React.Component {
             return(
               <Row key={j} style={{height: "12.5%", width: "100%"}} >
                 {x.map((i, iindex) => {
-                  { var piece =  this.pieceInfo(i, j) ? <Piece /> : <div />}
                   if((jindex + iindex) % 2 === 0)
-                    return <WhiteSquare key={iindex + jindex} onClick={() => {
-                    console.log(window.store.getState())
-                    window.store.dispatch({ type: 'MOVE_PIECE', x: i, y: j })}}>{piece}</WhiteSquare>
+                    return <WhiteSquare key={iindex + jindex} onClick={this.handleOnClick.bind(this, i, j)}>{this.pieceInfo(i, j)}</WhiteSquare>
                   else
-                    return <BlackSquare key={iindex + jindex}  onClick={ () => {window.store.dispatch({ type: 'MOVE_PIECE', x: i, y: j })}}>{piece}</BlackSquare>
+                    return <BlackSquare key={iindex + jindex}  onClick={ this.handleOnClick.bind(this, i, j) }>{this.pieceInfo(i, j)}</BlackSquare>
                 })}
               </Row>
 
