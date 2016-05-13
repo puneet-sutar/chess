@@ -1,21 +1,16 @@
 $parentWidth: 800px;
 .circle{
-  width: 50%;
-  height: 50%;
-  background: grey;
-  color: white;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+  font-size: 300%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto;
 }
 
 .chess-board{
   width: 85vmin;
   height: 85vmin;
-  border: solid 5vmin grey;
+  border: solid 5px black;
 }
 .container-fluid{
   width: 100vw;
@@ -34,10 +29,10 @@ $parentWidth: 800px;
     background: cyan;
   }
   &.white{
-    background: white;
+    background: ivory;
   }
   &.black{
-    background: black;
+    background: url("http://www.cssauthor.com/wp-content/uploads/2015/01/Free-Wood-Texture1.jpg");
   }
 }
 //@media (max-width: 800px){

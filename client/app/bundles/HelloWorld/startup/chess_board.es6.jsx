@@ -5,7 +5,7 @@ const Row = ({children, style}) => {
   return(<div className="row" style={style}>{children}</div>)
 }
 
-const BlackSquare = ({children, selected, onClick, piece}) => {
+const BlackSquare = ({children, selected, onClick}) => {
   let className = "square "
   if(selected)
     className += " selected"
@@ -23,9 +23,9 @@ const WhiteSquare = ({children, selected, onClick, piece}) => {
   return(<div className={className} onClick={onClick} style={{float: 'left'}}>{children}</div>)
 }
 
-const Piece = ({color, name}) => {
+const Piece = ({color, name, icon}) => {
   return(
-    <div className="circle">{name[0]}</div>
+    <div className="circle">{`${icon}`}</div>
   )
 }
 export default class HelloWorldApp extends React.Component {
