@@ -15,29 +15,43 @@ const BlackSquare = ({children, selected, onClick}) => {
 }
 
 const WhiteSquare = ({children, selected, onClick, piece}) => {
-  let className = "square"
+  let className = "square";
   if(selected)
-    className += " selected"
+    className += " selected";
   else
-    className += " white"
+    className += " white";
   return(<div className={className} onClick={onClick} style={{float: 'left'}}>{children}</div>)
 }
 
-const Piece = ({color, name, icon}) => {
+const pieceToIconMapping = {
+  R: "\u2656",
+  N: "\u2658",
+  B: "\u2657",
+  Q: "\u2655",
+  K: "\u2654",
+  P: "\u2659",
+  r: "\u265C",
+  n: "\u265E",
+  b: "\u265D",
+  q: "\u265B",
+  k: "\u265A",
+  p: "\u265F"
+};
+
+const Piece = ({piece}) => {
   return(
-    <div className="circle">{`${icon}`}</div>
+    <div className="circle">{pieceToIconMapping[piece]}</div>
   )
 }
 export default class HelloWorldApp extends React.Component {
 
 
-  pieceInfo(x, y){
+  pieceInfo(i, j){
     var state = window.store.getState();
     var return_value = <div />
-    state.pieces.forEach((i) => {
-      if(i.x === x && i.y === y)
-        return_value = <Piece {...i}/>
-    });
+    var piece = state.pieces[j][i];
+    if(piece)
+      return_value = <Piece piece={piece}/>
     return return_value
   }
 
@@ -47,23 +61,22 @@ export default class HelloWorldApp extends React.Component {
     })
   }
 
-  handleOnClick(x, y){
+  handleOnClick(x, y, i, j){
     console.log(x, y)
     var state = window.store.getState();
     if(state.selectedPiece.x){
       window.store.dispatch({ type: 'MOVE_PIECE', x1: state.selectedPiece.x, y1: state.selectedPiece.y, x2: x, y2: y  })
     }else{
       var selectedPiece = {}
-      state.pieces.forEach((i) => {
-        if(i.x === x && i.y === y)
-          selectedPiece = { x: x, y: y }
-      });
+      var piece = state.pieces[j][i];
+      if(piece)
+        selectedPiece = { x: x, y: y }
       window.store.dispatch({ type: 'SELECT_PIECE', ...selectedPiece })
     }
   }
   render () {
     var y = [8, 7, 6, 5, 4, 3, 2, 1];
-    var x = ['A', 'B', 'C', 'D', 'E', 'F','G', 'H'];
+    var x = ['a', 'b', 'c', 'd', 'e', 'f','g', 'h'];
     return (
       <div className="container-fluid">
         <div className="chess-board" >
@@ -72,9 +85,9 @@ export default class HelloWorldApp extends React.Component {
               <Row key={j} style={{height: "12.5%", width: "100%"}} >
                 {x.map((i, iindex) => {
                   if((jindex + iindex) % 2 === 0)
-                    return <WhiteSquare key={iindex + jindex} onClick={this.handleOnClick.bind(this, i, j)}>{this.pieceInfo(i, j)}</WhiteSquare>
+                    return <WhiteSquare key={iindex + jindex} onClick={this.handleOnClick.bind(this, i, j, iindex, jindex)}>{this.pieceInfo(iindex,jindex)}</WhiteSquare>
                   else
-                    return <BlackSquare key={iindex + jindex}  onClick={ this.handleOnClick.bind(this, i, j) }>{this.pieceInfo(i, j)}</BlackSquare>
+                    return <BlackSquare key={iindex + jindex}  onClick={ this.handleOnClick.bind(this, i, j, iindex, jindex) }>{this.pieceInfo(iindex,jindex)}</BlackSquare>
                 })}
               </Row>
 
